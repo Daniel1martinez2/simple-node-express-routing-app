@@ -4,9 +4,7 @@ exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
-    formsCSS: true,
-    productCSS: true,
-    activeAddProduct: true
+    editing: false
   });
 };
 
@@ -18,6 +16,29 @@ exports.postAddProduct = (req, res, next) => {
   const product = new Product(title, imageUrl, description, price);
   product.save();
   res.redirect('/');
+};
+
+exports.getEditProduct = (req, res, next) => {
+  const productId = req.params.productId;
+  const editMode = req.query.edit === "true";
+  //Check wether there is the edit mode on
+  if(!editMode){
+    res.redirect('/');
+  }
+  //Find the current product according to the given ID
+  Product.findById(productId, fetchedProduct => {
+    //If there is no such a product, then redirect the user to the home page
+    if(!fetchedProduct){
+      //Enhance the UX showing a error
+      res.redirect('/');
+    }
+    res.render('admin/edit-product', {
+      pageTitle: 'Edit Product',
+      path: '/admin/edit-products',
+      editing: editMode,
+      product: fetchedProduct
+    });
+  });
 };
 
 exports.getProducts = (req, res, next) => {
