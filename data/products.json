@@ -1,13 +1,1 @@
-[{
-    "id": "123456",
-    "title": "A Book",
-    "imageUrl": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
-    "description": "This is an awesome book!",
-    "price": "19"
-}, {
-    "title": "Nuevoooo",
-    "imageUrl": "https://happytails.tips/wp-content/uploads/2020/09/cat-5578141_1920-e1604025099382-682x1024.jpg",
-    "description": "a nice cat",
-    "price": "20",
-    "id": "0.3270577321742978"
-}]
+[{"id":"123456","title":" AAA Booooook ","imageUrl":" https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg ","description":"This is an awesome book! \r\n                ","price":"19"},{"id":"0.3270577321742978","title":"A cattt","imageUrl":" https://happytails.tips/wp-content/uploads/2020/09/cat-5578141_1920-e1604025099382-682x1024.jpg ","description":"a nice cat \r\n                ","price":"20"}]
