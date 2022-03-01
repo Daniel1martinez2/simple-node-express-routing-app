@@ -1,3 +1,4 @@
+const res = require('express/lib/response');
 const fs = require('fs');
 const path = require('path');
 
@@ -51,8 +52,19 @@ module.exports = class Product {
     });
   }
 
-  edit() {
-
+  static delete(currentId) {
+    getProductsFromFile(products => {
+      const existingProductIndex =  products.findIndex( prod => prod.id === currentId);
+      console.log(existingProductIndex, '🐈')
+      if(existingProductIndex){
+        console.log("✨")
+        const updatedProducts = [...products];
+        updatedProducts.splice(existingProductIndex, 1);
+        fs.writeFile(p, JSON.stringify(updatedProducts), err => {
+          console.log(err, "PRODUCT.js");
+        });
+      }
+    })
   }
 
   static fetchAll(cb) {
