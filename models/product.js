@@ -1,6 +1,7 @@
 const res = require('express/lib/response');
 const fs = require('fs');
 const path = require('path');
+const Cart = require('./cart');
 
 const p = path.join(
   path.dirname(process.mainModule.filename),
@@ -17,6 +18,16 @@ const getProductsFromFile = cb => {
     }
   });
 };
+
+const updateProducts = (updatedProducts, cb = () =>{}) => {
+  fs.writeFile(p, JSON.stringify(updatedProducts), err => {
+    if(!err){
+      cb()
+    }else{
+      console.log(err, "PRODUCT.js");
+    }
+  });
+}
 
 module.exports = class Product {
   constructor(
@@ -39,31 +50,23 @@ module.exports = class Product {
         const existingProductIndex = products.findIndex( prod => prod.id === this.id);
         const updatedProducts = [...products];
         updatedProducts[existingProductIndex] = this; 
-        fs.writeFile(p, JSON.stringify(updatedProducts), err => {
-          console.log(err, "PRODUCT.js");
-        });
+        updateProducts(updatedProducts);
       }else{
         this.id = Math.random().toString();
-        products.push(this);
-        fs.writeFile(p, JSON.stringify(products), err => {
-          console.log(err, "PRODUCT.js");
-        });
+        const updatedProducts = [...products];
+        updatedProducts.push(this);
+        updateProducts(updatedProducts);
       }
     });
   }
 
   static delete(currentId) {
     getProductsFromFile(products => {
-      const existingProductIndex =  products.findIndex( prod => prod.id === currentId);
-      console.log(existingProductIndex, '🐈')
-      if(existingProductIndex){
-        console.log("✨")
-        const updatedProducts = [...products];
-        updatedProducts.splice(existingProductIndex, 1);
-        fs.writeFile(p, JSON.stringify(updatedProducts), err => {
-          console.log(err, "PRODUCT.js");
-        });
-      }
+      const currentProduct = products.find(prod => prod.id === currentId);
+      const updatedProducts = products.filter( prod => prod.id !== currentId);
+      updateProducts(updatedProducts, () => {
+        Cart.deleteProduct(currentId, currentProduct.price);
+      });
     })
   }
 
